@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/jpeg" href="favicon.jpg">
+
+<link rel="apple-touch-icon" href="favicon.jpg">
+    <title>MakePoster | PRO Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Khand:wght@700;800&family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --app-bg: #f1f5f9; --card-bg: #ffffff; --primary: #3b82f6; --primary-hover: #2563eb;
+            --text-main: #0f172a; --text-muted: #64748b; --border: #e2e8f0; --accent: #ffcc00;
+        }
+        /* --- PREMIUM ANIMATED BACKGROUND --- */
+        body {
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(circle at 15% 100px, rgba(37, 99, 235, 0.25), transparent 55%), 
+                radial-gradient(circle at 85% 200px, rgba(139, 92, 246, 0.25), transparent 60%),
+                radial-gradient(circle at 50% 80vh, rgba(139, 92, 246, 0.15), transparent 50%);
+            background-attachment: fixed;
+            background-size: 150% 150%;
+            animation: gentleBreathe 12s ease-in-out infinite alternate;
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            color: #0f172a;
+        }
+
+        /* This controls the background floating animation */
+        @keyframes gentleBreathe {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        .master-header { background: #0f172a; color: var(--accent); padding: 18px; text-align: center; font-family: 'Khand', sans-serif; font-size: 24px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.15); letter-spacing: 1px; }
+        .tab-container { display: flex; overflow-x: auto; gap: 12px; padding: 15px 20px; background: white; border-bottom: 1px solid var(--border); scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+        .tab-container::-webkit-scrollbar { display: none; }
+        .tab-btn { white-space: nowrap; padding: 10px 22px; border: 1px solid var(--border); border-radius: 30px; background: var(--app-bg); color: var(--text-muted); font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); outline: none; }
+        .tab-btn.active { background: var(--text-main); color: white; border-color: var(--text-main); box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2); }
+        .layout-section { display: none; width: 100%; max-width: 550px; margin: 0 auto; padding: 25px 20px; box-sizing: border-box; animation: fadeIn 0.4s ease-out forwards; flex-direction: column; align-items: center;}
+        .layout-section.active-section { display: flex !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .layout-section > div[class^="controls"], .layout-section > div[class^="main"] > div {
+            background: var(--card-bg) !important; padding: 25px !important; border-radius: 16px !important; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01) !important; border: 1px solid rgba(226, 232, 240, 0.8) !important; width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; margin-bottom: 0 !important; text-align: left !important;
+        }
+        .layout-section label, .layout-section h2, .layout-section h3, .layout-section .section-title-v95 { font-family: 'Mukta', sans-serif !important; font-weight: 700 !important; color: #334155 !important; font-size: 14px !important; display: block !important; margin-top: 15px !important; margin-bottom: 6px !important; text-align: left !important; letter-spacing: 0 !important; }
+        .layout-section h2, .layout-section h3 { font-size: 20px !important; color: var(--text-main) !important; margin-top: 0 !important; margin-bottom: 15px !important; border-bottom: 2px solid var(--app-bg); padding-bottom: 10px; text-align: center !important;}
+        .layout-section input[type="text"], .layout-section textarea { width: 100% !important; padding: 14px 16px !important; border-radius: 10px !important; border: 1.5px solid var(--border) !important; background: var(--app-bg) !important; font-family: 'Mukta', inherit !important; font-size: 15px !important; transition: all 0.2s ease !important; color: var(--text-main) !important; box-sizing: border-box !important; margin: 0 !important; outline: none !important;}
+        .layout-section input[type="text"]:focus, .layout-section textarea:focus { border-color: var(--primary) !important; background: white !important; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important; }
+        .layout-section input[type="file"] { width: 100%; margin: 0; }
+        .layout-section input[type="file"]::file-selector-button { padding: 12px 20px; border-radius: 8px; border: 1px solid var(--border); background: white; color: var(--text-main); font-weight: 700; cursor: pointer; transition: 0.2s; margin-right: 12px; font-family: inherit; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .layout-section input[type="file"]::file-selector-button:hover { background: var(--app-bg); border-color: #cbd5e1; }
+        .layout-section button[class^="btn-gen"] { background: var(--primary) !important; color: white !important; border: none !important; padding: 18px !important; border-radius: 12px !important; font-weight: 800 !important; font-size: 17px !important; width: 100% !important; cursor: pointer !important; transition: all 0.2s ease !important; margin-top: 25px !important; box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3) !important; letter-spacing: 0.5px !important;}
+        .layout-section button[class^="btn-gen"]:active { transform: scale(0.97) !important; }
+        .layout-section button[class^="btn-down"], .layout-section a[class^="btn-save"] { background: #10b981 !important; color: white !important; padding: 18px !important; border-radius: 12px !important; font-weight: 800 !important; font-size: 17px !important; text-align: center !important; width: 100% !important; margin-top: 15px !important; box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3) !important; border: none !important; text-decoration: none !important; box-sizing: border-box !important; cursor: pointer !important; transition: all 0.2s ease !important;}
+        .layout-section button[class^="btn-down"]:active, .layout-section a[class^="btn-save"]:active { transform: scale(0.97) !important; }
+        .layout-section canvas, .layout-section img[id^="preview-img"] { width: 100% !important; max-width: 100% !important; border-radius: 16px !important; box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important; margin-top: 25px !important; border: 4px solid white !important; box-sizing: border-box !important;}
+        div[id^="render-wrap"] { position: absolute !important; left: -9999px !important; top: -9999px !important; opacity: 0 !important; pointer-events: none !important;}
+
+        /* POSTER SPECIFIC CSS */
+        #poster-v95 { width: 1080px; height: 1080px; background: #000; position: relative; overflow: hidden; --accent: #ffcc00; --blue: #3ec7ff; }
+        #poster-v95 .post-bg-v95 { width: 100%; height: 100%; object-fit: cover; position: absolute; }
+        #poster-v95 .shadow-layer-v95 { position: absolute; inset: 0; z-index: 5; background: linear-gradient(90deg, #000 45%, rgba(0,0,0,0.6) 75%, transparent 100%); }
+        #poster-v95.tpl-seamless .shadow-layer-v95 { background: linear-gradient(0deg, #000 35%, transparent 70%); }
+        #poster-v95 .logo-wrap-v95 { position: absolute; top: 40px; right: 50px; z-index: 20; }
+        #poster-v95 .logo-img-v95 { height: 160px; width: auto; display: none; filter: drop-shadow(0 0 15px rgba(255,255,255,0.3)); }
+        #poster-v95 .post-content-v95 { position: absolute; inset: 0; z-index: 10; display: flex; align-items: center; padding: 60px 30px; }
+        #poster-v95.tpl-cinematic .left-box-v95 { width: 62%; height: 720px; display: flex; flex-direction: column; justify-content: flex-start; position: relative; padding-right: 50px; box-sizing: border-box;}
+        #poster-v95.tpl-cinematic .left-box-v95::after { content: ''; position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 16px; height: 420px; border-radius: 20px; background: var(--accent); }
+        #poster-v95.tpl-cinematic.tpl-blue .left-box-v95::after { background: var(--blue); }
+        #poster-v95.tpl-cinematic .right-box-v95 { width: 38%; display: flex; justify-content: flex-end; align-items: center; }
+        #poster-v95.tpl-cinematic .footer-v95 { position: absolute; bottom: 50px; left: 80px; color: var(--accent); font-family: 'Khand', sans-serif; font-size: 45px; font-weight: bold; z-index: 15; }
+        #poster-v95.tpl-seamless .post-content-v95 { flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 110px; }
+        #poster-v95.tpl-seamless .left-box-v95 { width: 100%; height: 378px; display: flex; align-items: center; justify-content: center; text-align: center; }
+        #poster-v95.tpl-seamless .left-box-v95::after { display: none; }
+        #poster-v95.tpl-seamless .right-box-v95 { display: none !important; }
+        #poster-v95.tpl-seamless .footer-v95 { position: absolute; bottom: 35px; left: 0; text-align: center; width: 100%; color: var(--accent); font-family: 'Khand', sans-serif; font-size: 45px; font-weight: bold; z-index: 20; }
+        #poster-v95 .post-desc-v95 { color: #ffffff !important; font-weight: 800; line-height: 1.25; text-align: left; width: 100%; text-shadow: 2px 2px 15px rgba(0,0,0,0.9); }
+        #poster-v95.tpl-seamless .post-desc-v95 { text-align: center; }
+        #poster-v95 .hl-text { font-family: 'Mukta', sans-serif; font-weight: 800; color: var(--accent) !important; display: inline; }
+        #poster-v95.tpl-blue .hl-text { color: var(--blue) !important; }
+        #poster-v95.tpl-blue .footer-v95 { color: var(--blue) !important; }
+        #poster-v95 .round-container-v95 { width: 400px; height: 400px; border-radius: 50%; border: 12px solid var(--accent); box-shadow: 0 0 70px rgba(0,0,0,0.8); overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        #poster-v95.tpl-blue .round-container-v95 { border-color: var(--blue); }
+        #poster-v95 .round-media-v95 { width: 100%; height: 100%; object-fit: cover; }
+        #section-v95 .btn-grid-v95 { display: grid !important; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        #section-v95 .btn-opt-v95 { padding: 12px; border: 1px solid var(--border); border-radius: 8px; text-align: center; cursor: pointer; font-size: 14px; font-weight: 700; background: var(--app-bg); color: var(--text-muted); }
+        #section-v95 .btn-opt-v95.active { background: var(--text-main); color: white; border-color: var(--text-main); }
+
+        #poster-v110, #poster-v4 { width: 1080px; height: 1350px; background: #000; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        #poster-v110 .main-bg, #poster-v4 .main-bg { position: absolute; top: 0; left: 0; width: 100%; height: 75%; object-fit: cover; z-index: 1; }
+        #poster-v110 .gradient-fade, #poster-v4 .gradient-fade { position: absolute; top: 0; left: 0; width: 100%; height: 75%; background: linear-gradient(to bottom, transparent 50%, #000000 100%); z-index: 2; }
+        #poster-v110 .logo-top, #poster-v4 .logo-top { position: absolute; top: 40px; right: 40px; width: 140px; height: auto; z-index: 50; }
+        #poster-v110 .circle-container, #poster-v4 .circle-container { position: absolute; left: 50px; bottom: 35%; width: 380px; height: 380px; border-radius: 50%; border: 6px solid #e2e8f0; overflow: hidden; z-index: 15; box-shadow: 0 10px 30px rgba(0,0,0,0.6); background: #222; }
+        #poster-v110 #circle-img-v110, #poster-v4 #circle-img-v4 { width: 100%; height: 100%; object-fit: cover; }
+        #poster-v110 .bottom-section, #poster-v4 .bottom-section { position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 0 50px 60px 50px; box-sizing: border-box; z-index: 10; }
+        #poster-v110 .watermark, #poster-v4 .watermark { color: #888; font-size: 30px; font-weight: 600; margin-bottom: 20px; letter-spacing: 1px; }
+        #poster-v110 #render-quote-v110, #poster-v4 #render-quote-v4 { font-weight: 800; line-height: 1.35; color: white; text-align: center; width: 100%; }
+        #poster-v110 .hl, #poster-v4 .hl { color: #ff3131 !important; font-weight: 800; }
+
+        #poster-v108 { width: 1080px; height: 1080px; background: #000; position: relative; overflow: hidden; display: flex; --accent: #ffcc00; --highlight: #1ECBE1;}
+        #poster-v108 .logo-top-v108 { position: absolute; top: 50px; right: 50px; width: 160px; height: auto; z-index: 50; filter: drop-shadow(0 0 15px rgba(0,0,0,0.8)); display: none; }
+        #poster-v108 .circle-decor-v108 { position: absolute; bottom: -80px; right: -50px; width: 550px; height: 550px; background: var(--accent); border-radius: 50%; z-index: 1; }
+        #poster-v108 .text-side-v108 { position: relative; z-index: 10; width: 70%; height: 100%; padding: 80px 40px 180px 65px; display: flex; flex-direction: column; box-sizing: border-box; justify-content: flex-start; }
+        #poster-v108 #render-quote-v108 { font-weight: 800; line-height: 1.25; color: white; text-align: left; text-rendering: optimizeLegibility; word-wrap: break-word; width: 100%; }
+        #poster-v108 .hl { color: var(--highlight) !important; font-weight: 800; display: inline; }
+        #poster-v108 .photo-side-v108 { position: absolute; right: 0; bottom: 0; width: 40%; height: 75%; z-index: 5; display: flex; align-items: flex-end; justify-content: flex-end; }
+        #poster-v108 #person-img-v108 { max-width: 100%; max-height: 100%; object-fit: contain; object-position: right bottom; }
+        #poster-v108 .footer-info-v108 { position: absolute; bottom: 15px; left: 65px; z-index: 20; }
+        #poster-v108 .line-v108 { width: 350px; height: 8px; background: white; margin-bottom: 8px; border-radius: 4px; }
+        #poster-v108 .u-name-v108 { font-size: 80px; font-weight: 800; color: white; margin: 0; line-height: 1; }
+        #poster-v108 .u-desig-v108 { font-size: 38px; color: var(--accent); font-weight: 700; margin-top: 5px; }
+
+        #poster-v112 { width: 1080px; height: 1350px; background: #000; position: relative; overflow: hidden; display: flex; flex-direction: column; --accent: #ffcc00; --green-hl: #4ade80;}
+        #poster-v112 .main-bg-v112 { position: absolute; top: 0; left: 0; width: 100%; height: 68%; object-fit: cover; z-index: 1; }
+        #poster-v112 .gradient-fade-v112 { position: absolute; top: 0; left: 0; width: 100%; height: 70%; background: linear-gradient(to bottom, transparent 40%, #000000 100%); z-index: 2; }
+        #poster-v112 .logo-top-v112 { position: absolute; top: 50px; right: 50px; height: 80px; width: auto; z-index: 10; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); display: none; }
+        #poster-v112 .overlay-rect-v112 { position: absolute; right: 50px; bottom: 40%; width: 450px; height: 320px; border-radius: 35px; border: 8px solid #ffffff; overflow: hidden; z-index: 15; box-shadow: 0 15px 40px rgba(0,0,0,0.8); background: #222; }
+        #poster-v112 #rect-img-v112 { width: 100%; height: 100%; object-fit: cover; }
+        #poster-v112 .bottom-section-v112 { position: absolute; bottom: 60px; left: 0; width: 100%; height: 35%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 0 40px 40px 40px; box-sizing: border-box; z-index: 10; }
+        #poster-v112 #render-quote-v112 { font-weight: 800; line-height: 1.35; color: white; text-align: center; text-rendering: optimizeLegibility; word-wrap: break-word; width: 100%; }
+        #poster-v112 .hl-green-v112 { color: var(--green-hl) !important; font-weight: 800; display: inline; }
+        #poster-v112 .hl-yellow-v112 { color: var(--accent) !important; font-weight: 800; display: inline; }
+        #poster-v112 .footer-strip-v112 { position: absolute; bottom: 0; left: 0; width: 100%; height: 50px; background: #000000; border-bottom: 6px solid #e11d48; display: flex; justify-content: center; align-items: center; z-index: 20; }
+        #poster-v112 .footer-text-v112 { color: #f8fafc; font-size: 26px; font-weight: 700; letter-spacing: 1px; }
+        #poster-v112 .icon-v112 { font-size: 24px; margin: 0 8px; }
+
+        /* V10 specific layout */
+        #section-v10 { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 15px; }
+        #section-v10 label { color: #f39c12 !important; }
+        #section-v10 .color-picker-wrapper-v10 { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+        #section-v10 input[type="color"] { width: 50px !important; height: 40px !important; padding: 0 !important; border: none !important; border-radius: 8px !important; cursor: pointer; }
+    
+
+    /* MakePoster Navbar & Footer Styles */
+        .navbar { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #e2e8f0; font-family: sans-serif; }
+        .nav-logo { color: #1e293b; font-size: 22px; font-weight: 800; text-decoration: none; font-family: sans-serif; letter-spacing: 0.5px; text-transform: uppercase; }
+        .nav-logo span { color: #2563eb; }
+        .nav-links a { color: #64748b; text-decoration: none; margin-left: 20px; font-size: 14px; font-weight: 600; transition: color 0.3s; font-family: sans-serif; }
+        .nav-links a:hover, .nav-links a.active { color: #2563eb; }
+        
+    /* Advanced Professional Footer Styles (DARK PREMIUM THEME) */
+.site-footer-pro { background: #0f172a; border-top: none; margin-top: 60px; color: #94a3b8; font-family: 'Inter', sans-serif; font-size: 14px; padding: 60px 20px 20px; width: 100%; box-sizing: border-box; }
+.footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; margin-bottom: 40px; text-align: left; }
+
+/* Headings and Logo */
+.footer-col h4 { color: #ffffff; font-size: 15px; font-weight: 800; margin-top: 0; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.footer-col.identity .nav-logo { font-size: 24px; margin-bottom: 15px; display: inline-block; color: #ffffff; font-weight: 800; text-decoration: none; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+.footer-col.identity .nav-logo span { color: #3b82f6; } 
+.footer-col p { line-height: 1.6; margin-bottom: 20px; color: #94a3b8; font-size: 14px; }
+
+/* Links */
+.footer-col ul { list-style: none; padding: 0; margin: 0; }
+.footer-col ul li { margin-bottom: 12px; }
+.footer-col ul li a { color: #94a3b8; text-decoration: none; transition: all 0.2s ease; font-weight: 500; display: inline-block; }
+.footer-col ul li a:hover { color: #ffffff; transform: translateX(4px); }
+
+/* Icons & Contact */
+.social-icons { display: flex; gap: 15px; }
+.social-icons a { color: #64748b; transition: color 0.2s; display: flex; align-items: center; justify-content: center; }
+.social-icons a:hover { color: #3b82f6; }
+.social-icons svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.contact-info { display: flex; flex-direction: column; gap: 12px; }
+.contact-info a { color: #94a3b8; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+.contact-info a:hover { color: #ffffff; }
+.contact-info svg { width: 16px; height: 16px; color: #64748b; }
+
+/* Bottom Bar */
+.footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 25px; border-top: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+.trust-badges { display: flex; align-items: center; gap: 15px; opacity: 0.5; filter: grayscale(100%); transition: all 0.3s; }
+.trust-badges:hover { opacity: 1; filter: grayscale(0%); } 
+.ssl-badge { display: flex; align-items: center; gap: 6px; font-weight: 700; color: #10b981; font-size: 13px; }
+.ssl-badge svg { color: #10b981; fill: none; stroke-width: 2.5; }
+.copyright { font-size: 13px; color: #64748b; font-weight: 500; }
+
+@media (max-width: 768px) { .footer-bottom { flex-direction: column; text-align: center; justify-content: center; } .trust-badges { justify-content: center; width: 100%; } }
+        /* WhatsApp Share Button Style */
+        .btn-share-wa {
+            background: #25d366 !important;
+            color: white !important;
+            padding: 18px !important;
+            border-radius: 12px !important;
+            font-weight: 800 !important;
+            font-size: 17px !important;
+            text-align: center !important;
+            width: 100% !important;
+            margin-top: 15px !important;
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3) !important;
+            border: none !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-share-wa:active { transform: scale(0.97) !important; }
+     /* --- MOBILE RESPONSIVENESS FIXES --- */
+@media (max-width: 768px) {
+    /* Stack the navbar vertically on small screens */
+    .navbar {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    /* Wrap the links so they don't break the screen */
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+    
+    /* Remove the left margin so they center perfectly */
+    .nav-links a {
+        margin-left: 0;
+        font-size: 13px; /* Slightly smaller text for phones */
+    }
+}
+
+/* ==========================================
+   MOBILE APP BOTTOM NAVIGATION
+   ========================================== */
+
+/* 1. Hide the bottom nav on Desktop */
+.mobile-bottom-nav {
+    display: none !important; 
+}
+
+/* 2. Mobile View Rules */
+@media (max-width: 768px) {
+    /* HIDE THE OLD TOP MENU */
+   /* ONLY hide the top links, keep the logo! */
+    .nav-links {
+        display: none !important; 
+    }
+    /* SHOW THE NEW BOTTOM MENU */
+    .mobile-bottom-nav {
+        display: flex !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        background-color: #ffffff !important;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1) !important; 
+        padding: 10px 0 !important;
+        z-index: 999999 !important; 
+    }
+
+    .bottom-nav-item {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-decoration: none !important;
+        color: #64748b !important; 
+        font-family: sans-serif !important;
+        flex: 1 !important;
+    }
+
+    .bottom-nav-item svg {
+        width: 22px !important;
+        height: 22px !important;
+        margin-bottom: 4px !important;
+        stroke: #64748b !important; /* Default Grey */
+        transition: stroke 0.2s ease;
+    }
+
+    .bottom-nav-item .nav-icon {
+        font-size: 22px !important;
+        margin-bottom: 4px !important;
+    }
+
+    .bottom-nav-item .nav-label {
+        font-size: 11px !important;
+        font-weight: 600 !important;
+    }
+
+    .bottom-nav-item.active {
+        color: #0d6efd !important; 
+    }
+    .bottom-nav-item.active svg {
+        stroke: #0d6efd !important; /* Blue icon for active page */
+    }
+    
+    /* Stop the footer from hiding behind the new menu */
+    body {
+        padding-bottom: 75px !important; 
+    }
+}
+
+     </style>
+</head>
+<body>
+
+ <nav class="navbar">
+        <a href="index.html" class="nav-logo">MAKE<span>POSTER</span></a>
+        
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="pro-studio.html" style="color: #ea580c; font-weight: 800; background: #fffedd; padding: 4px 10px; border-radius: 6px; border: 1px solid #fde047;">🌟 PRO Studio</a>
+            <a href="blog.html">Tutorials & Blog</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div class="tab-container">
+        <button class="tab-btn active" onclick="switchLayout('v95', this)">1. Cinematic</button>
+        <button class="tab-btn" onclick="switchLayout('v110', this)">2. Fact Check</button>
+        <button class="tab-btn" onclick="switchLayout('v3', this)">3. News Canvas</button>
+        <button class="tab-btn" onclick="switchLayout('v4', this)">4. Safe Fact Check</button>
+        <button class="tab-btn" onclick="switchLayout('v108', this)">5. Circle Decor</button>
+        <button class="tab-btn" onclick="switchLayout('v112', this)">6. News Analysis</button>
+        <button class="tab-btn" onclick="switchLayout('v7', this)">7. Square News</button>
+        <button class="tab-btn" onclick="switchLayout('v8', this)">8. Centered Round</button>
+        <button class="tab-btn" onclick="switchLayout('v9', this)">9. Top Round</button>
+        <button class="tab-btn" onclick="switchLayout('v10', this)">10. Pro Creator</button>
+        <button class="tab-btn" onclick="switchLayout('v11', this)">11. Split Layout</button>
+    </div>
+
+    <div id="section-v95" class="layout-section active-section">
+        <div class="controls-v95">
+            <h3>Cinematic Studio</h3>
+            <span class="section-title-v95">Select Layout</span>
+            <div class="btn-grid-v95">
+                <div class="btn-opt-v95 active" onclick="setMode_v95('cinematic', this)">CINEMATIC</div>
+                <div class="btn-opt-v95" onclick="setMode_v95('seamless', this)">SEAMLESS</div>
+            </div>
+            <span class="section-title-v95">Select Theme</span>
+            <div class="btn-grid-v95">
+                <div class="btn-opt-v95 active" onclick="setTheme_v95('yellow', this)">YELLOW</div>
+                <div class="btn-opt-v95" onclick="setTheme_v95('blue', this)">BLUE</div>
+            </div>
+            <label>1. Background Photo</label>
+            <input type="file" onchange="loadImg_v95(event, 'target-img-v95')">
+            <div id="round-ui-box-v95">
+                <label>2. Round Profile Photo</label>
+                <input type="file" onchange="loadImg_v95(event, 'round-photo-v95')">
+            </div>
+            <label>3. Upload Logo</label>
+            <input type="file" onchange="loadLogo_v95(event)">
+            <label>4. Footer Name</label>
+            <input type="text" id="uHandle_v95" value="">
+            <label>5. Write News / Caption</label>
+            <textarea id="uDesc_v95" rows="4"></textarea>
+            <label>6. Highlight Words</label>
+            <input type="text" id="uWords_v95">
+            <button class="btn-gen-v95" onclick="generate_v95()">Generate HD Poster 🎬</button>
+        </div>
+        <img id="preview-img-v95">
+        <a id="download-btn-v95" class="btn-save-v95">Save to Gallery 📥</a>
+        <div id="render-wrap-v95">
+            <div id="poster-v95" class="tpl-cinematic tpl-yellow">
+                <img id="target-img-v95" class="post-bg-v95">
+                <div class="shadow-layer-v95"></div>
+                <div class="logo-wrap-v95"><img id="render-logo-v95" class="logo-img-v95"></div>
+                <div class="post-content-v95">
+                    <div class="left-box-v95" id="box-l-v95"><div id="render-text-v95" class="post-desc-v95"></div></div>
+                    <div class="right-box-v95"><div class="round-container-v95" id="r-container-v95"><img id="round-photo-v95" class="round-media-v95"></div></div>
+                    <div id="render-handle-v95" class="footer-v95">MakePoster.in</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="section-v110" class="layout-section">
+        <div class="controls-v110">
+            <h3>Fact Check Studio</h3>
+            <label>1. Select Background Photo</label>
+            <input type="file" onchange="loadImg_v110(event, 'main-bg-img-v110')">
+            <label>2. Select Round Photo</label>
+            <input type="file" onchange="loadImg_v110(event, 'circle-img-v110')">
+            <label>3. Upload Logo</label>
+            <input type="file" onchange="loadImg_v110(event, 'render-logo-v110')">
+            <label>4. Watermark Name</label>
+            <input type="text" id="uWatermark_v110" value="">
+            <label>5. Write Text</label>
+            <textarea id="uQuote_v110" rows="4"></textarea>
+            <label>6. Highlight Words</label>
+            <input type="text" id="uHl_v110">
+            <button class="btn-gen-v110" onclick="generate_v110()">Generate HD Poster ✨</button>
+        </div>
+        <img id="preview-img-v110">
+        <a id="download-btn-v110" class="btn-save-v110">Save to Gallery 📥</a>
+        <div id="render-wrap-v110">
+            <div id="poster-v110">
+                <img id="main-bg-img-v110" class="main-bg">
+                <div class="gradient-fade"></div>
+                <img id="render-logo-v110" class="logo-top">
+                <div class="circle-container"><img id="circle-img-v110"></div>
+                <div class="bottom-section">
+                    <div class="watermark" id="render-watermark-v110"></div>
+                    <div id="render-quote-v110"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="section-v3" class="layout-section">
+        <div class="controls-v3">
+            <h3>News Canvas Generator</h3>
+            <label>1. Background Photo</label>
+            <input type="file" id="bgImage_v3">
+            <label>2. Top Box Photo</label>
+            <input type="file" id="topImage_v3">
+            <label>3. Bottom Box Photo</label>
+            <input type="file" id="bottomImage_v3">
+            <label>4. Upload Logo</label>
+            <input type="file" id="logoImage_v3">
+            <label>5. News (Caption)</label>
+            <textarea id="caption_v3" rows="4"></textarea>
+            <label>6. Highlight Words</label>
+            <input type="text" id="highlightWords_v3" value="">
+            <button class="btn-gen-v3" onclick="generate_v3()">Generate Canvas 🚀</button>
+        </div>
+        <canvas id="canvas_v3" width="1080" height="1350"></canvas>
+        <button class="btn-down-v3" onclick="download_v3()">Download Poster 📥</button>
+    </div>
+
+    <div id="section-v4" class="layout-section">
+        <div class="controls-v4">
+            <h3>Fact Check (Safe Spacing)</h3>
+            <label>1. Select Background Photo</label>
+            <input type="file" onchange="loadImg_v4(event, 'main-bg-img-v4')">
+            <label>2. Select Round Photo</label>
+            <input type="file" onchange="loadImg_v4(event, 'circle-img-v4')">
+            <label>3. Upload Logo</label>
+            <input type="file" onchange="loadImg_v4(event, 'render-logo-v4')">
+            <label>4. Watermark Name</label>
+            <input type="text" id="uWatermark_v4" value="">
+            <label>5. Write Text</label>
+            <textarea id="uQuote_v4" rows="4"></textarea>
+            <label>6. Highlight Words</label>
+            <input type="text" id="uHl_v4">
+            <button class="btn-gen-v4" onclick="generate_v4()">Generate HD Poster ✨</button>
+        </div>
+        <img id="preview-img-v4">
+        <a id="download-btn-v4" class="btn-save-v4">Save to Gallery 📥</a>
+        <div id="render-wrap-v4">
+            <div id="poster-v4">
+                <img id="main-bg-img-v4" class="main-bg">
+                <div class="gradient-fade"></div>
+                <img id="render-logo-v4" class="logo-top">
+                <div class="circle-container"><img id="circle-img-v4"></div>
+                <div class="bottom-section">
+                    <div class="watermark" id="render-watermark-v4"></div>
+                    <div id="render-quote-v4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="section-v108" class="layout-section">
+        <div class="controls-v108">
+            <h3>Circle Decor Studio</h3>
+            <label>1. Upload Logo</label>
+            <input type="file" onchange="loadImg_v108(event, 'render-logo-v108')">
+            <label>2. Person's Photo (Without Background)</label>
+            <input type="file" onchange="loadImg_v108(event, 'person-img-v108')">
+            <label>3. Write Quote / Text</label>
+            <textarea id="uQuote_v108" rows="4"></textarea>
+            <label>4. Highlight Words</label>
+            <input type="text" id="uHl_v108" placeholder="">
+            <label>5. Name</label>
+            <input type="text" id="uName_v108" value="">
+            <label>6. Designation / Position</label>
+            <input type="text" id="uDesig_v108" value="">
+            <button class="btn-gen-v108" onclick="generate_v108()">Generate HD Poster ✨</button>
+        </div>
+        <img id="preview-img-v108">
+        <a id="download-btn-v108" class="btn-save-v108">Save to Gallery 📥</a>
+        <div id="render-wrap-v108">
+            <div id="poster-v108">
+                <img id="render-logo-v108" class="logo-top-v108" src="">
+                <div class="circle-decor-v108"></div>
+                <div class="text-side-v108">
+                    <div id="render-quote-v108"></div>
+                </div>
+                <div class="footer-info-v108">
+                    <div class="line-v108"></div>
+                    <p class="u-name-v108" id="render-name-v108"></p>
+                    <p class="u-desig-v108" id="render-desig-v108"></p>
+                </div>
+                <div class="photo-side-v108">
+                    <img id="person-img-v108" src="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="section-v112" class="layout-section">
+        <div class="controls-v112">
+            <h3>News Analysis Studio</h3>
+            <label>1. Main Background Photo</label>
+            <input type="file" onchange="loadImg_v112(event, 'main-bg-img-v112')">
+            <label>2. Square Overlay Photo</label>
+            <input type="file" onchange="loadImg_v112(event, 'rect-img-v112')">
+            <label>3. Upload Logo</label>
+            <input type="file" onchange="loadImg_v112(event, 'render-logo-v112')">
+            <label>4. Write Main News</label>
+            <textarea id="uQuote_v112" rows="4"></textarea>
+            <label>5. Green Highlight</label>
+            <input type="text" id="uHlGreen_v112" placeholder="">
+            <label>6. Yellow Highlight</label>
+            <input type="text" id="uHlYellow_v112" placeholder="">
+            <label>7. Footer Name</label>
+            <input type="text" id="uFooter_v112" value="">
+            <button class="btn-gen-v112" onclick="generate_v112()">Generate HD Poster 🚀</button>
+        </div>
+        <img id="preview-img-v112">
+        <a id="download-btn-v112" class="btn-save-v112">Save to Gallery 📥</a>
+        <div id="render-wrap-v112">
+            <div id="poster-v112">
+                <img id="main-bg-img-v112" class="main-bg-v112" src="">
+                <div class="gradient-fade-v112"></div>
+                <img id="render-logo-v112" class="logo-top-v112" src="">
+                <div class="overlay-rect-v112">
+                    <img id="rect-img-v112" src="">
+                </div>
+                <div class="bottom-section-v112">
+                    <div id="render-quote-v112"></div>
+                </div>
+                <div class="footer-strip-v112">
+                    <div class="footer-text-v112">
+                        <span class="icon-v112">📘</span> <span class="icon-v112">📸</span> <span id="render-footer-v112"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="section-v7" class="layout-section">
+        <div class="controls-v7">
+            <h3>Square Photo News</h3>
+            <label>Background:</label> <input type="file" id="bgImg_v7" accept="image/*">
+            <label>Square Photo:</label> <input type="file" id="roundImg_v7" accept="image/*">
+            <label>Caption:</label> <textarea id="mainText_v7" rows="4"></textarea>
+            <label>Highlight Words:</label> <input type="text" id="highlightWords_v7" value="">
+            <label>Footer Name:</label> <input type="text" id="handle_v7" value="">
+            <button class="btn-gen-v7" onclick="generate_v7()">Generate Poster 🚀</button>
+        </div>
+        <canvas id="posterCanvas_v7" width="1080" height="1350"></canvas>
+        <button class="btn-down-v7" onclick="download_v7()">Download Poster 📥</button>
+    </div>
+
+    <div id="section-v8" class="layout-section">
+        <div class="controls-v8">
+            <h3>Centered Round Photo</h3>
+            <label>Background:</label> <input type="file" id="bgImg_v8" accept="image/*">
+            <label>Round Photo (Center):</label> <input type="file" id="roundImg_v8" accept="image/*">
+            <label>Logo (Top Right):</label> <input type="file" id="logoImg_v8" accept="image/*">
+            <label>Caption:</label> <textarea id="mainText_v8" rows="4"></textarea>
+            <label>Footer Name:</label> <input type="text" id="FooterName_v8" value="">
+            <button class="btn-gen-v8" onclick="generatePoster_v8()">Generate Poster 🚀</button>
+        </div>
+        <canvas id="posterCanvas_v8" width="1080" height="1350"></canvas>
+        <button class="btn-down-v8" onclick="download_v8()">Download Poster 📥</button>
+    </div>
+
+    <div id="section-v9" class="layout-section">
+        <div class="controls-v9">
+            <h3>Top Right Round</h3>
+            <label>Background:</label> <input type="file" id="bgImg_v9" accept="image/*">
+            <label>Round Photo:</label> <input type="file" id="roundImg_v9" accept="image/*">
+            <label>Logo:</label> <input type="file" id="logoImg_v9" accept="image/*">
+            <label>Caption:</label> <textarea id="mainText_v9" rows="3"></textarea>
+            <label>Highlight:</label> <input type="text" id="subText_v9" value="">
+            <button class="btn-gen-v9" onclick="generatePoster_v9()">Generate Poster 🚀</button>
+        </div>
+        <canvas id="posterCanvas_v9" width="1080" height="1350"></canvas>
+        <button class="btn-down-v9" onclick="download_v9()">Download Poster 📥</button>
+    </div>
+
+    <div id="section-v10" class="layout-section">
+        <div class="controls-v10">
+            <h3>🎨 Text Creator Pro</h3>
+            <label>📸 Main Background Image</label> <input type="file" id="mainImage_v10" accept="image/*">
+            <label>🖼️ Side Inset Image</label> <input type="file" id="sideImage_v10" accept="image/*">
+            <label>📝 Text</label> <textarea id="textInput_v10"></textarea>
+            <label>✨ Highlight Words</label> <input type="text" id="highlightWords_v10" value="">
+            <div class="color-picker-wrapper-v10"><label>Color:</label> <input type="color" id="highlightColor_v10" value="#f1c40f"></div>
+            <label>👇 Footer Handle</label> <input type="text" id="footerHandle_v10" value="MakePoster">
+            <button class="btn-gen-v10" onclick="generateImage_v10()">🎨 Generate Image</button>
+        </div>
+        <canvas id="canvas_v10" width="800" height="1000"></canvas>
+        <button class="btn-down-v10" onclick="downloadImage_v10()">⬇️ Download Image</button>
+    </div>
+
+    <div id="section-v11" class="layout-section">
+        <div class="controls-v11">
+            <h3>Split Layout Canvas</h3>
+            <label>Background Photo:</label> <input type="file" id="bgImg_v11" accept="image/*">
+            <label>Round Photo (Person):</label> <input type="file" id="roundImg_v11" accept="image/*">
+            <label>Main Caption (Large Text):</label> <textarea id="mainText_v11" rows="3"></textarea>
+            <label>Bottom Text (Highlight):</label> <input type="text" id="subText_v11" value="अमेरिकी अधिकारी ने की पुष्टि">
+            <button class="btn-gen-v11" onclick="generatePoster_v11()">Generate Poster 🚀</button>
+        </div>
+        <canvas id="posterCanvas_v11" width="1080" height="1350"></canvas>
+        <button class="btn-down-v11" onclick="download_v11()">Download Poster 📥</button>
+    </div>
+     <footer class="site-footer-pro">
+<div class="footer-container">
+<div class="footer-col identity">
+            <a href="index.html" class="nav-logo" style="display: inline-block; margin-bottom: 15px;">MAKE<span>POSTER</span></a>
+            <p>Simplifying campaign and political design for professionals. Create high-quality, impact-driven graphics in seconds.</p>
+<div class="social-icons">
+<a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+<a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+<a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+</div>
+</div>
+
+    <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+            <li><a href="about.html">How it Works</a></li>
+            <li><a href="#">Video Tutorials</a></li>
+            <li><a href="#">Pricing Plans</a></li>
+            <li><a href="#">Design Blog</a></li>
+            <li><a href="#">FAQs</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="#">Enterprise Solutions</a></li>
+            <li><a href="contact.html">Request a Quote</a></li>
+        </ul>
+        <div class="contact-info" style="margin-top: 15px;">
+            <a href="mailto:support@makeposter.in"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> support@makeposter.in</a>
+            <a href="tel:+919999999999"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> +91 99999 99999</a>
+        </div>
+    </div>
+
+    <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms & Conditions</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+            <li><a href="#">Copyright Notice</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="footer-bottom">
+    <div class="copyright">
+        &copy; 2026 MakePoster.in. All rights reserved.
+    </div>
+    
+    <div class="trust-badges">
+        <svg viewBox="0 0 32 10"><path d="M10.8,1.3l-1.9,8.5H6.2l1.2-5.4c0.1-0.3,0.3-0.5,0.6-0.5h2.1L9,2.8H5.9L5.5,4.7H4.3l0.7-3.4H10.8z M15.4,1.3l-1.9,8.5H11l1.9-8.5H15.4z M19.4,3.2c0-1.2-1.3-1.6-2.2-1.9c-0.8-0.3-1.1-0.5-1.1-0.8c0-0.4,0.5-0.7,1.2-0.7c0.8,0,1.3,0.2,1.7,0.4l0.4-2c-0.5-0.2-1.3-0.4-2.2-0.4c-2.4,0-4.1,1.3-4.1,3.2c0,1.4,1.3,1.8,2.3,2.2c0.9,0.3,1.2,0.6,1.2,0.9c0,0.5-0.6,0.8-1.3,0.8c-0.9,0-1.6-0.3-2.1-0.6l-0.4,2.1c0.5,0.3,1.5,0.5,2.6,0.5C18.2,7.2,19.4,5.9,19.4,3.2z M27,1.3h-2.1c-0.5,0-0.8,0.2-1.1,0.7L20.2,9.8h2.8l0.6-1.5h3.4l0.3,1.5h2.6L27,1.3z M24.3,6.3l1.1-3l0.6,3H24.3z"></path></svg>
+        <svg viewBox="0 0 32 20"><circle cx="10" cy="10" r="10"></circle><circle cx="22" cy="10" r="10"></circle></svg>
+        <svg viewBox="0 0 24 24"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.11c-.473 0-.867.319-.98.775l-1.27 6.228z"></path></svg>
+    </div>
+
+    <div class="ssl-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        256-bit SSL Secured
+    </div>
+</div>
+</footer>
+
+    <script>
+        // 🚀 SMART TAB NAVIGATION
+        function switchLayout(id, btn) {
+            document.querySelectorAll('.layout-section').forEach(sec => sec.classList.remove('active-section'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('section-' + id).classList.add('active-section');
+            if(btn) { btn.classList.add('active'); btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
+        }
+        
+        // 🔥 UNIVERSAL SAFE IMAGE LOADER FOR MOBILE
+        function loadFileAsImage(file) {
+            return new Promise((resolve, reject) => {
+                if (!file) return resolve(null);
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image(); img.onload = () => resolve(img); img.onerror = () => reject(new Error("Image processing failed")); img.src = e.target.result;
+                };
+                reader.onerror = () => reject(new Error("FileReader error"));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        window.onload = () => { generate_v3(); generate_v7(); generatePoster_v8(); generatePoster_v9(); generateImage_v10(); generatePoster_v11(); };
+        function escapeRegExp(string) { return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+        // V95
+        let currentMode_v95 = 'cinematic'; let currentTheme_v95 = 'yellow'; let bgUploaded_v95 = false;
+        function setMode_v95(mode, btn) { currentMode_v95 = mode; btn.parentElement.querySelectorAll('.btn-opt-v95').forEach(b => b.classList.remove('active')); btn.classList.add('active'); document.getElementById('poster-v95').className = `tpl-${currentMode_v95} tpl-${currentTheme_v95}`; document.getElementById('round-ui-box-v95').style.display = (mode === 'seamless') ? 'none' : 'block'; }
+        function setTheme_v95(theme, btn) { currentTheme_v95 = theme; btn.parentElement.querySelectorAll('.btn-opt-v95').forEach(b => b.classList.remove('active')); btn.classList.add('active'); document.getElementById('poster-v95').className = `tpl-${currentMode_v95} tpl-${theme}`; const accent = (theme === 'yellow') ? '#ffcc00' : '#3ec7ff'; document.getElementById('render-handle-v95').style.color = accent; }
+        function loadImg_v95(e, id) { if (e.target.files[0]) { const reader = new FileReader(); reader.onload = (event) => { document.getElementById(id).src = event.target.result; if(id === 'target-img-v95') bgUploaded_v95 = true; }; reader.readAsDataURL(e.target.files[0]); } }
+        function loadLogo_v95(e) { if (e.target.files[0]) { const reader = new FileReader(); reader.onload = (event) => { const l = document.getElementById('render-logo-v95'); l.src = event.target.result; l.style.display = "block"; }; reader.readAsDataURL(e.target.files[0]); } }
+        async function generate_v95() {
+            let text = document.getElementById('uDesc_v95').value; const uWords = document.getElementById('uWords_v95').value; const renderText = document.getElementById('render-text-v95'); const boxL = document.getElementById('box-l-v95');
+            if(!text || !bgUploaded_v95) return alert("फोटो आणि मजकूर भरा!"); 
+            document.getElementById('render-handle-v95').innerText = document.getElementById('uHandle_v95').value;
+            let processedText = text;
+            if(uWords) { uWords.split(',').forEach(w => { const word = w.trim(); if(word) { const reg = new RegExp(word, 'gi'); processedText = processedText.replace(reg, match => `<span class="hl-text">${match}</span>`); } }); }
+            renderText.innerHTML = processedText;
+            let fontSize = (currentMode_v95 === 'seamless') ? 140 : 230; renderText.style.fontSize = fontSize + 'px';
+            setTimeout(() => {
+                while ((renderText.scrollHeight > boxL.offsetHeight || renderText.scrollWidth > boxL.offsetWidth) && fontSize > 25) { fontSize -= 2; renderText.style.fontSize = fontSize + 'px'; }
+                html2canvas(document.getElementById('poster-v95'), { scale: 3, useCORS: true }).then(canvas => {
+                    const data = canvas.toDataURL('image/png'); const pImg = document.getElementById('preview-img-v95'); const dBtn = document.getElementById('download-btn-v95');
+                    pImg.src = data; pImg.style.display = "block"; dBtn.href = data; dBtn.download = `Poster1_V95.png`; dBtn.style.display = "block"; pImg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            }, 300);
+        }
+
+        // V110
+        function loadImg_v110(e, id) { if (e.target.files[0]) { const reader = new FileReader(); reader.onload = (event) => { document.getElementById(id).src = event.target.result; }; reader.readAsDataURL(e.target.files[0]); } }
+        async function generate_v110() {
+            let quote = document.getElementById('uQuote_v110').value.normalize('NFC'); const hlInput = document.getElementById('uHl_v110').value.normalize('NFC'); const renderQuote = document.getElementById('render-quote-v110');
+            document.getElementById('render-watermark-v110').innerText = document.getElementById('uWatermark_v110').value;
+            if(hlInput) {
+                let words = [...new Set(hlInput.split(/[,\s।]+/).map(w => w.trim()).filter(w => w.length > 0))]; words.sort((a, b) => b.length - a.length);
+                if(words.length > 0) { const pattern = words.map(word => escapeRegExp(word)).join('|'); const reg = new RegExp(`(^|[\\s,।!?'"\\n\\r])(${pattern})(?=[\\s,।!?'"\\n\\r]|$)`, 'g'); quote = quote.replace(reg, '$1<span class="hl">$2</span>'); }
+            }
+            renderQuote.innerHTML = quote;
+            let fontSize = 65; renderQuote.style.fontSize = fontSize + 'px';
+            while (renderQuote.offsetHeight > 380 && fontSize > 25) { fontSize -= 2; renderQuote.style.fontSize = fontSize + 'px'; }
+            setTimeout(() => {
+                html2canvas(document.getElementById('poster-v110'), { scale: 3, useCORS: true }).then(canvas => {
+                    const data = canvas.toDataURL('image/png'); const pImg = document.getElementById('preview-img-v110'); const dBtn = document.getElementById('download-btn-v110');
+                    pImg.src = data; pImg.style.display = "block"; dBtn.href = data; dBtn.download = `Poster2.png`; dBtn.style.display = "block"; pImg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            }, 500);
+        }
+
+        // V3
+        const canvas_v3 = document.getElementById("canvas_v3"); const ctx_v3 = canvas_v3.getContext("2d");
+        let bgImg_v3 = null; let topImg_v3 = null; let bottomImg_v3 = null; let logoImg_v3 = null;
+        document.getElementById("bgImage_v3").onchange = async function() { bgImg_v3 = await loadFileAsImage(this.files[0]); generate_v3(); }; 
+        document.getElementById("topImage_v3").onchange = async function() { topImg_v3 = await loadFileAsImage(this.files[0]); generate_v3(); }; 
+        document.getElementById("bottomImage_v3").onchange = async function() { bottomImg_v3 = await loadFileAsImage(this.files[0]); generate_v3(); }; 
+        document.getElementById("logoImage_v3").onchange = async function() { logoImg_v3 = await loadFileAsImage(this.files[0]); generate_v3(); };
+        function coverImage_v3(img, x, y, w, h) { const scale = Math.max(w / img.width, h / img.height); const sw = img.width * scale; const sh = img.height * scale; const dx = x + (w - sw) / 2; const dy = y + (h - sh) / 2; ctx_v3.drawImage(img, dx, dy, sw, sh); }
+        function roundRect_v3(x, y, w, h, r) { ctx_v3.beginPath(); ctx_v3.moveTo(x + r, y); ctx_v3.lineTo(x + w - r, y); ctx_v3.quadraticCurveTo(x + w, y, x + w, y + r); ctx_v3.lineTo(x + w, y + h - r); ctx_v3.quadraticCurveTo(x + w, y + h, x + w - r, y + h); ctx_v3.lineTo(x + r, y + h); ctx_v3.quadraticCurveTo(x, y + h, x, y + h - r); ctx_v3.lineTo(x, y + r); ctx_v3.quadraticCurveTo(x, y, x + r, y); ctx_v3.closePath(); }
+        function drawCaption_v3(text, x, y, maxWidth, fontSize, highlightWords) { if(!text) return; ctx_v3.font = "bold " + fontSize + "px 'Noto Sans Devanagari', Arial"; ctx_v3.textAlign = "center"; let words = text.split(" "); let line = ""; let lines = []; for (let n = 0; n < words.length; n++) { let test = line + words[n] + " "; let metrics = ctx_v3.measureText(test); if (metrics.width > maxWidth && n > 0) { lines.push(line); line = words[n] + " "; } else { line = test; } } lines.push(line); lines.forEach((l, i) => { let highlight = false; highlightWords.forEach(hw => { if (hw && l.includes(hw)) highlight = true; }); ctx_v3.fillStyle = highlight ? "#ffd400" : "#ffffff"; ctx_v3.shadowColor = "rgba(0,0,0,0.8)"; ctx_v3.shadowBlur = 10; ctx_v3.fillText(l, x, y + (i * 70)); }); ctx_v3.shadowBlur = 0; }
+        function generate_v3() {
+ctx_v3.clearRect(0, 0, 1080, 1350);
+
+if (bgImg_v3) {
+    coverImage_v3(bgImg_v3, 0, 0, 1080, 1350);
+} else {
+    const g = ctx_v3.createLinearGradient(0, 0, 1080, 1350);
+    g.addColorStop(0, "#7a001c");
+    g.addColorStop(1, "#310046");
+    ctx_v3.fillStyle = g;
+    ctx_v3.fillRect(0, 0, 1080, 1350);
+}
+
+if (topImg_v3) {
+    ctx_v3.save();
+    roundRect_v3(45, 70, 420, 340, 25);
+    ctx_v3.clip();
+    coverImage_v3(topImg_v3, 45, 70, 420, 340);
+    ctx_v3.restore();
+    ctx_v3.strokeStyle = "#ffffff";
+    ctx_v3.lineWidth = 8;
+    roundRect_v3(45, 70, 420, 340, 25);
+    ctx_v3.stroke();
+}
+
+if (bottomImg_v3) {
+    ctx_v3.save();
+    roundRect_v3(380, 560, 655, 380, 30);
+    ctx_v3.clip();
+    coverImage_v3(bottomImg_v3, 380, 560, 655, 380);
+    ctx_v3.restore();
+    ctx_v3.strokeStyle = "#ffffff";
+    ctx_v3.lineWidth = 8;
+    roundRect_v3(380, 560, 655, 380, 30);
+    ctx_v3.stroke();
+}
+
+const captionHeight = 1350 * 0.30;
+const captionStart = 1350 - captionHeight;
+const gradient = ctx_v3.createLinearGradient(0, captionStart, 0, 1350);
+gradient.addColorStop(0, "rgba(0,0,0,0)");
+gradient.addColorStop(0.4, "rgba(0,0,0,0.55)");
+gradient.addColorStop(1, "rgba(0,0,0,0.9)");
+ctx_v3.fillStyle = gradient;
+ctx_v3.fillRect(0, captionStart, 1080, captionHeight);
+
+const caption = document.getElementById("caption_v3").value || "";
+const highlightWords = (document.getElementById("highlightWords_v3").value || "").split(",").map(w => w.trim());
+let fontSize = 70;
+if (caption.length > 120) fontSize = 55;
+if (caption.length > 200) fontSize = 45;
+drawCaption_v3(caption, 540, captionStart + 140, 850, fontSize, highlightWords);
+
+if (logoImg_v3) {
+    ctx_v3.drawImage(logoImg_v3, 900, 25, 160, 80);
+} 
+
+ctx_v3.strokeStyle = "rgba(255,255,255,0.6)";
+ctx_v3.lineWidth = 6;
+ctx_v3.strokeRect(0, 0, 1080, 1350);
+}
+        function download_v3() { const link = document.createElement("a"); link.download = "Poster3.png"; link.href = canvas_v3.toDataURL(); link.click(); }
+
+        // V4
+        function loadImg_v4(e, id) { if (e.target.files[0]) { const reader = new FileReader(); reader.onload = (event) => { document.getElementById(id).src = event.target.result; }; reader.readAsDataURL(e.target.files[0]); } }
+        async function generate_v4() {
+            let quote = document.getElementById('uQuote_v4').value.normalize('NFC'); const hlInput = document.getElementById('uHl_v4').value.normalize('NFC'); const renderQuote = document.getElementById('render-quote-v4');
+            document.getElementById('render-watermark-v4').innerText = document.getElementById('uWatermark_v4').value;
+            if(hlInput) {
+                let words = [...new Set(hlInput.split(/[,\s।]+/).map(w => w.trim()).filter(w => w.length > 0))]; words.sort((a, b) => b.length - a.length);
+                if(words.length > 0) { const pattern = words.map(word => escapeRegExp(word)).join('|'); const reg = new RegExp(`(^|[\\s,।!?'"\\n\\r])(${pattern})(?=[\\s,।!?'"\\n\\r]|$)`, 'g'); quote = quote.replace(reg, '$1<span class="hl">$2</span>'); }
+            }
+            renderQuote.innerHTML = quote;
+            let fontSize = 65; renderQuote.style.fontSize = fontSize + 'px';
+            while (renderQuote.offsetHeight > 380 && fontSize > 25) { fontSize -= 2; renderQuote.style.fontSize = fontSize + 'px'; }
+            setTimeout(() => {
+                html2canvas(document.getElementById('poster-v4'), { scale: 3, useCORS: true }).then(canvas => {
+                    const data = canvas.toDataURL('image/png'); const pImg = document.getElementById('preview-img-v4'); const dBtn = document.getElementById('download-btn-v4');
+                    pImg.src = data; pImg.style.display = "block"; dBtn.href = data; dBtn.download = `Poster4.png`; dBtn.style.display = "block"; pImg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            }, 500);
+        }
+
+        // V108 (Poster 5)
+        function loadImg_v108(e, id) { if (e.target.files[0]) { const reader = new FileReader(); reader.onload = (event) => { const el = document.getElementById(id); el.src = event.target.result; el.style.display = "block"; }; reader.readAsDataURL(e.target.files[0]); } }
+        async function generate_v108() {
+            let quote = document.getElementById('uQuote_v108').value.normalize('NFC'); const hlInput = document.getElementById('uHl_v108').value.normalize('NFC'); const renderQuote = document.getElementById('render-quote-v108');
+            if(hlInput) {
+                let words = [...new Set(hlInput.split(/[,\s।]+/).map(w => w.trim()).filter(w => w.length > 0))]; words.sort((a, b) => b.length - a.length);
+                if(words.length > 0) { const pattern = words.map(word => escapeRegExp(word)).join('|'); const reg = new RegExp(`(^|[\\s,।!?'"\\n\\r])(${pattern})(?=[\\s,।!?'"\\n\\r]|$)`, 'g'); quote = quote.replace(reg, '$1<span class="hl">$2</span>'); }
+            }
+            renderQuote.innerHTML = quote;
+            document.getElementById('render-name-v108').innerText = `~ ${document.getElementById('uName_v108').value}`;
+            document.getElementById('render-desig-v108').innerText = document.getElementById('uDesig_v108').value;
+            let fontSize = 85; renderQuote.style.fontSize = fontSize + 'px';
+            while (renderQuote.offsetHeight > 850 && fontSize > 28) { fontSize -= 2; renderQuote.style.fontSize = fontSize + 'px'; }
+            setTimeout(() => {
+                html2canvas(document.getElementById('poster-v108'), { scale: 3, useCORS: true }).then(canvas => {
+                    const data = canvas.toDataURL('image/png'); const pImg = document.getElementById('preview-img-v108'); const dBtn = document.getElementById('download-btn-v108');
+                    pImg.src = data; pImg.style.display = "block"; dBtn.href = data; dBtn.download = `Poster5.png`; dBtn.style.display = "block"; pImg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            }, 500);
+        }
+
+        // V112 (Poster 6)
+        function loadImg_v112(e, id) { if (e.target.files[0]) { const reader = new FileReader(); reader.onload = (event) => { const el = document.getElementById(id); el.src = event.target.result; el.style.display = "block"; }; reader.readAsDataURL(e.target.files[0]); } }
+        async function generate_v112() {
+            let quote = document.getElementById('uQuote_v112').value.normalize('NFC');
+            const hlGreen = document.getElementById('uHlGreen_v112').value.normalize('NFC');
+            const hlYellow = document.getElementById('uHlYellow_v112').value.normalize('NFC');
+            const renderQuote = document.getElementById('render-quote-v112');
+            document.getElementById('render-footer-v112').innerText = document.getElementById('uFooter_v112').value;
+
+            let hlList = [];
+            if(hlGreen) { hlGreen.split(/[,\s।]+/).forEach(w => { if(w.trim()) hlList.push({ word: w.trim(), colorClass: 'hl-green-v112' }); }); }
+            if(hlYellow) { hlYellow.split(/[,\s।]+/).forEach(w => { if(w.trim()) hlList.push({ word: w.trim(), colorClass: 'hl-yellow-v112' }); }); }
+            hlList.sort((a, b) => b.word.length - a.word.length);
+
+            const uniqueHlList = []; const seenWords = new Set();
+            for (const item of hlList) { if (!seenWords.has(item.word)) { seenWords.add(item.word); uniqueHlList.push(item); } }
+
+            uniqueHlList.forEach(item => {
+                const reg = new RegExp(`(^|[\\s,।!?'"\\n\\r])(${escapeRegExp(item.word)})(?=[\\s,।!?'"\\n\\r]|$)`, 'g');
+                quote = quote.replace(reg, `$1<span class="${item.colorClass}">$2</span>`);
+            });
+
+            renderQuote.innerHTML = quote;
+            let fontSize = 90; renderQuote.style.fontSize = fontSize + 'px';
+            while (renderQuote.offsetHeight > 420 && fontSize > 30) { fontSize -= 2; renderQuote.style.fontSize = fontSize + 'px'; }
+            setTimeout(() => {
+                html2canvas(document.getElementById('poster-v112'), { scale: 3, useCORS: true }).then(canvas => {
+                    const data = canvas.toDataURL('image/png'); const pImg = document.getElementById('preview-img-v112'); const dBtn = document.getElementById('download-btn-v112');
+                    pImg.src = data; pImg.style.display = "block"; dBtn.href = data; dBtn.download = `Poster6.png`; dBtn.style.display = "block"; pImg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            }, 500);
+        }
+
+        // V7
+        let bgImg_v7 = null; let roundImg_v7 = null;
+        document.getElementById('bgImg_v7').addEventListener('change', async (e) => { bgImg_v7 = await loadFileAsImage(e.target.files[0]); generate_v7(); });
+        document.getElementById('roundImg_v7').addEventListener('change', async (e) => { roundImg_v7 = await loadFileAsImage(e.target.files[0]); generate_v7(); });
+        document.getElementById('mainText_v7').addEventListener('input', generate_v7);
+        document.getElementById('highlightWords_v7').addEventListener('input', generate_v7);
+        document.getElementById('handle_v7').addEventListener('input', generate_v7);
+
+        function getLines_v7(ctx, text, maxWidth) {
+            if(!text) return [];
+            const words = text.split(' '); let lines = []; let currentLine = words[0] || "";
+            for (let i = 1; i < words.length; i++) {
+                if (ctx.measureText(currentLine + " " + words[i]).width < maxWidth) { currentLine += " " + words[i]; } 
+                else { lines.push(currentLine); currentLine = words[i]; }
+            }
+            if(currentLine) lines.push(currentLine);
+            return lines;
+        }
+        function drawTextSmart_v7(ctx, text, highlights, x, y, maxWidth, maxHeight) {
+            if(!text) return;
+            let fontSize = 70; ctx.textAlign = "center";
+            while (fontSize > 30) {
+                ctx.font = `bold ${fontSize}px Arial`;
+                const lines = getLines_v7(ctx, text, maxWidth);
+                if (lines.length * (fontSize + 10) <= maxHeight) break;
+                fontSize -= 5;
+            }
+            const lines = getLines_v7(ctx, text, maxWidth);
+            let currentY = y; const lineHeight = fontSize + 15;
+            lines.forEach(line => {
+                const words = line.split(' '); let currentX = x - (ctx.measureText(line).width / 2);
+                ctx.textAlign = "left";
+                words.forEach(word => {
+                    let cleanWord = word.replace(/[“”".,!]/g, "");
+                    ctx.fillStyle = highlights.includes(cleanWord) ? "#ffcc00" : "white";
+                    ctx.fillText(word + " ", currentX, currentY);
+                    currentX += ctx.measureText(word + " ").width;
+                });
+                currentY += lineHeight;
+            });
+            ctx.textAlign = "center";
+        }
+        async function generate_v7() {
+            const canvas = document.getElementById('posterCanvas_v7'); const ctx = canvas.getContext('2d');
+            ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (bgImg_v7) {
+                const scale = Math.max(canvas.width / bgImg_v7.width, canvas.height / bgImg_v7.height);
+                ctx.drawImage(bgImg_v7, (canvas.width - bgImg_v7.width * scale)/2, (canvas.height - bgImg_v7.height * scale)/2, bgImg_v7.width * scale, bgImg_v7.height * scale);
+            }
+            const gradient = ctx.createLinearGradient(0, 850, 0, 1350);
+            gradient.addColorStop(0, "rgba(0,0,0,0)"); gradient.addColorStop(0.3, "rgba(0,0,0,0.9)"); gradient.addColorStop(1, "rgba(0,0,0,1)");
+            ctx.fillStyle = gradient; ctx.fillRect(0, 850, 1080, 500);
+            if (roundImg_v7) {
+                ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.strokeRect(650, 100, 350, 350);
+                const size = Math.min(roundImg_v7.width, roundImg_v7.height);
+                ctx.drawImage(roundImg_v7, (roundImg_v7.width-size)/2, (roundImg_v7.height-size)/2, size, size, 650, 100, 350, 350);
+            }
+            const textEl = document.getElementById('mainText_v7'); const highlightEl = document.getElementById('highlightWords_v7');
+            if (textEl && highlightEl) {
+                const highlights = (highlightEl.value || "").split(',').map(w => w.trim());
+                drawTextSmart_v7(ctx, textEl.value || "", highlights, 540, 950, 950, 450);
+            }
+            const handleEl = document.getElementById('handle_v7');
+            if (handleEl) { ctx.fillStyle = "white"; ctx.font = "40px Arial"; ctx.textAlign = "center"; ctx.fillText(handleEl.value || "", 540, 1320); }
+        }
+        function download_v7() { const canvas = document.getElementById("posterCanvas_v7"); const link = document.createElement("a"); link.download = "Poster7.png"; link.href = canvas.toDataURL(); link.click(); }
+
+        // V8
+        let bgImg_v8 = null; let roundImg_v8 = null; let logoImg_v8 = null;
+        document.getElementById('bgImg_v8').addEventListener('change', async (e) => { bgImg_v8 = await loadFileAsImage(e.target.files[0]); generatePoster_v8(); });
+        document.getElementById('roundImg_v8').addEventListener('change', async (e) => { roundImg_v8 = await loadFileAsImage(e.target.files[0]); generatePoster_v8(); });
+        document.getElementById('logoImg_v8').addEventListener('change', async (e) => { logoImg_v8 = await loadFileAsImage(e.target.files[0]); generatePoster_v8(); });
+        document.getElementById('mainText_v8').addEventListener('input', generatePoster_v8);
+        document.getElementById('handleName_v8').addEventListener('input', generatePoster_v8);
+
+        function drawTextCentered_v8(ctx, text, x, y, maxWidth, lineHeight) {
+            if(!text) return;
+            const words = text.split(' '); let lines = []; let currentLine = words[0] || "";
+            for (let i = 1; i < words.length; i++) {
+                let word = words[i]; let width = ctx.measureText(currentLine + " " + word).width;
+                if (width < maxWidth) { currentLine += " " + word; } else { lines.push(currentLine); currentLine = word; }
+            }
+            if(currentLine) lines.push(currentLine);
+            lines.forEach((line, index) => { ctx.fillText(line, x, y + (index * lineHeight)); });
+        }
+        async function generatePoster_v8() {
+            const canvas = document.getElementById('posterCanvas_v8'); const ctx = canvas.getContext('2d');
+            const mainTextElement = document.getElementById('mainText_v8'); const handleElement = document.getElementById('handleName_v8');
+            ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            if (bgImg_v8) {
+                const scale = Math.max(canvas.width / bgImg_v8.width, canvas.height / bgImg_v8.height);
+                const x = (canvas.width / 2) - (bgImg_v8.width / 2 * scale); const y = (canvas.height / 2) - (bgImg_v8.height / 2 * scale);
+                ctx.drawImage(bgImg_v8, x, y, bgImg_v8.width * scale, bgImg_v8.height * scale);
+            }
+            const overlayHeight = canvas.height * 0.40;
+            const gradient = ctx.createLinearGradient(0, canvas.height - overlayHeight - 100, 0, canvas.height);
+            gradient.addColorStop(0, "rgba(0, 0, 0, 0)"); gradient.addColorStop(0.3, "rgba(0, 0, 0, 0.9)"); gradient.addColorStop(1, "rgba(0, 0, 0, 1)");
+            ctx.fillStyle = gradient; ctx.fillRect(0, canvas.height - overlayHeight - 100, canvas.width, overlayHeight + 100);
+            
+            if (roundImg_v8) {
+                const centerX = canvas.width / 2; const centerY = canvas.height * 0.45; const radius = 220;
+                ctx.beginPath(); ctx.arc(centerX, centerY, radius + 15, 0, Math.PI * 2); ctx.fillStyle = "white"; ctx.fill();
+                ctx.save(); ctx.beginPath(); ctx.arc(centerX, centerY, radius, 0, Math.PI * 2); ctx.clip();
+                const size = Math.min(roundImg_v8.width, roundImg_v8.height);
+                const x = (roundImg_v8.width - size) / 2; const y = (roundImg_v8.height - size) / 2;
+                ctx.drawImage(roundImg_v8, x, y, size, size, centerX - radius, centerY - radius, radius * 2, radius * 2); ctx.restore();
+            }
+            
+            if (logoImg_v8) {
+                ctx.drawImage(logoImg_v8, 850, 50, 180, 180);
+            }
+            
+            if (mainTextElement && mainTextElement.value) {
+                ctx.fillStyle = "white"; ctx.textAlign = "center"; ctx.font = "bold 75px Arial";
+                drawTextCentered_v8(ctx, mainTextElement.value, 540, 950, 950, 90);
+            }
+            
+            if (handleElement && handleElement.value) {
+                ctx.fillStyle = "rgba(255, 255, 255, 0.7)"; ctx.font = "40px Arial"; ctx.textAlign = "center";
+                ctx.fillText(handleElement.value, 540, canvas.height - 30);
+            }
+        }
+        function download_v8() { const canvas = document.getElementById("posterCanvas_v8"); const link = document.createElement("a"); link.download = "Poster8.png"; link.href = canvas.toDataURL(); link.click(); }
+
+        // V9
+        let bgImg_v9 = null; let roundImg_v9 = null; let logoImg_v9 = null;
+        document.getElementById('bgImg_v9').addEventListener('change', async (e) => { bgImg_v9 = await loadFileAsImage(e.target.files[0]); generatePoster_v9(); });
+        document.getElementById('roundImg_v9').addEventListener('change', async (e) => { roundImg_v9 = await loadFileAsImage(e.target.files[0]); generatePoster_v9(); });
+        document.getElementById('logoImg_v9').addEventListener('change', async (e) => { logoImg_v9 = await loadFileAsImage(e.target.files[0]); generatePoster_v9(); });
+        document.getElementById('mainText_v9').addEventListener('input', generatePoster_v9);
+        document.getElementById('subText_v9').addEventListener('input', generatePoster_v9);
+
+        function drawTextFromBottom_v9(ctx, text, x, y, maxWidth, lineHeight) {
+            if (!text) return;
+            const words = text.split(' ').reverse(); let line = ''; let currentY = y;
+            for(let n = 0; n < words.length; n++) {
+                let testLine = words[n] + ' ' + line; let metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && n > 0) { ctx.fillText(line, x, currentY); line = words[n] + ' '; currentY -= lineHeight; } 
+                else { line = testLine; }
+            }
+            ctx.fillText(line, x, currentY);
+        }
+        async function generatePoster_v9() {
+            const canvas = document.getElementById('posterCanvas_v9'); const ctx = canvas.getContext('2d');
+            ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            if (bgImg_v9) {
+                const scale = Math.max(canvas.width / bgImg_v9.width, canvas.height / bgImg_v9.height);
+                const x = (canvas.width / 2) - (bgImg_v9.width / 2 * scale); const y = (canvas.height / 2) - (bgImg_v9.height / 2 * scale);
+                ctx.drawImage(bgImg_v9, x, y, bgImg_v9.width * scale, bgImg_v9.height * scale);
+            }
+            
+            const overlayHeight = canvas.height * 0.35;
+            const gradient = ctx.createLinearGradient(0, canvas.height - overlayHeight, 0, canvas.height);
+            gradient.addColorStop(0, "rgba(0, 0, 0, 0)"); gradient.addColorStop(0.3, "rgba(0, 0, 0, 0.8)"); gradient.addColorStop(1, "rgba(0, 0, 0, 1)");
+            ctx.fillStyle = gradient; ctx.fillRect(0, canvas.height - overlayHeight, canvas.width, overlayHeight);
+            
+            if (roundImg_v9) {
+                ctx.save(); ctx.beginPath(); ctx.arc(850, 200, 150, 0, Math.PI * 2); ctx.clip();
+                const size = Math.min(roundImg_v9.width, roundImg_v9.height);
+                const x = (roundImg_v9.width - size) / 2; const y = (roundImg_v9.height - size) / 2;
+                ctx.drawImage(roundImg_v9, x, y, size, size, 700, 50, 300, 300);
+                ctx.restore(); ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.beginPath(); ctx.arc(850, 200, 150, 0, Math.PI * 2); ctx.stroke();
+            }
+            
+            if (logoImg_v9) {
+                ctx.drawImage(logoImg_v9, 50, 50, 200, 200);
+            }
+            
+            const mainTextElement = document.getElementById('mainText_v9'); const subTextElement = document.getElementById('subText_v9');
+            if (mainTextElement && subTextElement) {
+                ctx.textAlign = "center"; ctx.fillStyle = "white"; ctx.font = "45px Arial";
+                const subText = subTextElement.value || ""; const bottomMargin = canvas.height * 0.05;
+                ctx.fillStyle = "#ffcc00"; ctx.fillText(subText, 540, canvas.height - bottomMargin);
+                ctx.fillStyle = "white"; ctx.font = "bold 65px Arial"; const captionY = canvas.height - bottomMargin - 100; 
+                drawTextFromBottom_v9(ctx, mainTextElement.value || "", 540, captionY, 950, 80);
+            }
+        }
+        function download_v9() { const canvas = document.getElementById("posterCanvas_v9"); const link = document.createElement("a"); link.download = "Poster9.png"; link.href = canvas.toDataURL(); link.click(); }
+
+        // V10
+        let mainImg_v10 = null; let sideImg_v10 = null;
+        const canvas_v10 = document.getElementById('canvas_v10'); const ctx_v10 = canvas_v10.getContext('2d');
+        document.getElementById('mainImage_v10').addEventListener('change', async function(e) { if(e.target.files[0]){ mainImg_v10 = await loadFileAsImage(e.target.files[0]); generateImage_v10(); } });
+        document.getElementById('sideImage_v10').addEventListener('change', async function(e) { if(e.target.files[0]){ sideImg_v10 = await loadFileAsImage(e.target.files[0]); generateImage_v10(); } });
+        function debounce_v10(func, wait) { let timeout; return function executedFunction(...args) { const later = () => { clearTimeout(timeout); func(...args); }; clearTimeout(timeout); timeout = setTimeout(later, wait); }; }
+        document.getElementById('textInput_v10').addEventListener('input', debounce_v10(generateImage_v10, 500));
+        document.getElementById('highlightWords_v10').addEventListener('input', debounce_v10(generateImage_v10, 500));
+        document.getElementById('highlightColor_v10').addEventListener('change', generateImage_v10);
+        document.getElementById('footerHandle_v10').addEventListener('input', debounce_v10(generateImage_v10, 500));
+        CanvasRenderingContext2D.prototype.roundRect_v10 = function(x, y, w, h, r) {
+            if (w < 2 * r) r = w / 2; if (h < 2 * r) r = h / 2;
+            this.moveTo(x + r, y); this.lineTo(x + w - r, y); this.quadraticCurveTo(x + w, y, x + w, y + r);
+            this.lineTo(x + w, y + h - r); this.quadraticCurveTo(x + w, y + h, x + w - r, y + h); this.lineTo(x + r, y + h);
+            this.quadraticCurveTo(x, y + h, x, y + h - r); this.lineTo(x, y + r); this.quadraticCurveTo(x, y, x + r, y);
+            return this;
+        };
+        function generateImage_v10() {
+            ctx_v10.clearRect(0, 0, canvas_v10.width, canvas_v10.height);
+            if (mainImg_v10) {
+                const scale = Math.max(canvas_v10.width / mainImg_v10.width, canvas_v10.height / mainImg_v10.height);
+                const x = (canvas_v10.width / 2) - (mainImg_v10.width / 2) * scale; const y = (canvas_v10.height / 2) - (mainImg_v10.height / 2) * scale;
+                ctx_v10.drawImage(mainImg_v10, x, y, mainImg_v10.width * scale, mainImg_v10.height * scale);
+            } else {
+                const gradient = ctx_v10.createLinearGradient(0, 0, canvas_v10.width, canvas_v10.height);
+                gradient.addColorStop(0, '#2c3e50'); gradient.addColorStop(1, '#34495e'); ctx_v10.fillStyle = gradient; ctx_v10.fillRect(0, 0, canvas_v10.width, canvas_v10.height);
+            }
+            const v10_overlayHeight = canvas_v10.height * 0.40; const v10_overlayStartY = canvas_v10.height - v10_overlayHeight;
+            const v10_gradient = ctx_v10.createLinearGradient(0, v10_overlayStartY, 0, canvas_v10.height);
+            v10_gradient.addColorStop(0, "rgba(0, 0, 0, 0)"); v10_gradient.addColorStop(0.3, "rgba(0, 0, 0, 0.9)"); v10_gradient.addColorStop(1, "rgba(0, 0, 0, 1)");
+            ctx_v10.fillStyle = v10_gradient; ctx_v10.fillRect(0, v10_overlayStartY, canvas_v10.width, v10_overlayHeight);
+            const highlightColor = document.getElementById('highlightColor_v10').value;
+            if (sideImg_v10) {
+                const insetWidth = 280; const insetHeight = 350; const insetX = 40; const insetY = 80;
+                ctx_v10.strokeStyle = highlightColor; ctx_v10.lineWidth = 8; ctx_v10.strokeRect(insetX - 4, insetY - 4, insetWidth + 8, insetHeight + 8);
+                ctx_v10.save(); ctx_v10.beginPath(); ctx_v10.roundRect_v10(insetX, insetY, insetWidth, insetHeight, 20); ctx_v10.clip();
+                const scale = Math.max(insetWidth / sideImg_v10.width, insetHeight / sideImg_v10.height);
+                const x = insetX + (insetWidth / 2) - (sideImg_v10.width / 2) * scale; const y = insetY + (insetHeight / 2) - (sideImg_v10.height / 2) * scale;
+                ctx_v10.drawImage(sideImg_v10, x, y, sideImg_v10.width * scale, sideImg_v10.height * scale); ctx_v10.restore();
+                ctx_v10.shadowColor = highlightColor + '80'; ctx_v10.shadowBlur = 20; ctx_v10.strokeStyle = highlightColor + '4D'; ctx_v10.lineWidth = 2; ctx_v10.strokeRect(insetX, insetY, insetWidth, insetHeight); ctx_v10.shadowBlur = 0;
+            }
+            const text = document.getElementById('textInput_v10').value;
+            const rawWords = (document.getElementById('highlightWords_v10').value || "").split(',').map(w => w.trim()).filter(w => w.length > 0);
+            const highlightSet = new Set(rawWords);
+            const maxWidth = canvas_v10.width - 100; const maxHeight = 400; const lineHeight = 55;
+            let fontSize = 44; let lines = []; let finalFontSize = fontSize;
+            for (let attempt = fontSize; attempt >= 24; attempt -= 2) {
+                ctx_v10.font = `bold ${attempt}px "Segoe UI", Arial, sans-serif`;
+                const words = (text || "").split(' '); lines = []; let currentLine = words[0] || "";
+                for (let i = 1; i < words.length; i++) {
+                    const testLine = currentLine + ' ' + words[i];
+                    if (ctx_v10.measureText(testLine).width > maxWidth) { lines.push(currentLine); currentLine = words[i]; } 
+                    else { currentLine = testLine; }
+                }
+                if(currentLine) lines.push(currentLine);
+                const totalHeight = lines.length * lineHeight * (attempt / 44);
+                if (totalHeight <= maxHeight) { finalFontSize = attempt; break; }
+            }
+            ctx_v10.font = `bold ${finalFontSize}px "Segoe UI", Arial, sans-serif`;
+            const dynamicLineHeight = lineHeight * (finalFontSize / 44); const totalTextHeight = lines.length * dynamicLineHeight;
+            const footerTopY = canvas_v10.height - 80; const marginFromFooter = 30; const bottomBoundary = footerTopY - marginFromFooter;
+            let startY = bottomBoundary - totalTextHeight; startY = Math.max(startY, dynamicLineHeight / 2); const finalStartY = startY;
+            ctx_v10.textAlign = 'center'; ctx_v10.textBaseline = 'middle'; ctx_v10.shadowColor = 'rgba(0, 0, 0, 0.8)'; ctx_v10.shadowBlur = 8;
+            lines.forEach((line, lineIndex) => {
+                const y = finalStartY + lineIndex * dynamicLineHeight + dynamicLineHeight/2;
+                const words = line.split(' '); const totalWidth = ctx_v10.measureText(line).width;
+                let startX = (canvas_v10.width - totalWidth) / 2; let x = startX;
+                for (let word of words) {
+                    const wordWithSpace = word + ' '; const wordWidth = ctx_v10.measureText(wordWithSpace).width;
+                    if (highlightSet.has(word)) { ctx_v10.fillStyle = highlightColor; ctx_v10.shadowBlur = 10; } 
+                    else { ctx_v10.fillStyle = '#ffffff'; ctx_v10.shadowBlur = 8; }
+                    ctx_v10.fillText(word, x + ctx_v10.measureText(word).width/2, y); x += wordWidth;
+                }
+            });
+            ctx_v10.shadowBlur = 0;
+            const barY = canvas_v10.height - 80;
+            ctx_v10.fillStyle = 'rgba(0, 0, 0, 0.7)'; ctx_v10.fillRect(0, barY, canvas_v10.width, 60);
+            ctx_v10.strokeStyle = '#e74c3c'; ctx_v10.lineWidth = 3; ctx_v10.setLineDash([10, 5]);
+            ctx_v10.beginPath(); ctx_v10.moveTo(20, barY); ctx_v10.lineTo(canvas_v10.width - 20, barY); ctx_v10.stroke(); ctx_v10.setLineDash([]);
+            const footerHandle = document.getElementById('footerHandle_v10').value || '@handle';
+            ctx_v10.font = 'bold 28px "Segoe UI", Arial, sans-serif'; ctx_v10.fillStyle = '#fff'; ctx_v10.textAlign = 'center';
+            ctx_v10.fillText(footerHandle, canvas_v10.width / 2, barY + 35);
+        }
+        function downloadImage_v10() { const link = document.createElement('a'); link.download = 'Poster10.png'; link.href = canvas_v10.toDataURL('image/png', 1.0); link.click(); }
+
+        // V11
+        let bgImg_v11 = null; let roundImg_v11 = null;
+        document.getElementById('bgImg_v11').addEventListener('change', async (e) => { bgImg_v11 = await loadFileAsImage(e.target.files[0]); generatePoster_v11(); });
+        document.getElementById('roundImg_v11').addEventListener('change', async (e) => { roundImg_v11 = await loadFileAsImage(e.target.files[0]); generatePoster_v11(); });
+        document.getElementById('mainText_v11').addEventListener('input', generatePoster_v11);
+        document.getElementById('subText_v11').addEventListener('input', generatePoster_v11);
+
+        function drawTextFromBottom_v11(ctx, text, x, y, maxWidth, lineHeight) {
+            if (!text) return y;
+            const words = text.split(' ').reverse(); let line = ''; let currentY = y;
+            for(let n = 0; n < words.length; n++) {
+                let testLine = words[n] + ' ' + line; let metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && n > 0) { ctx.fillText(line, x, currentY); line = words[n] + ' '; currentY -= lineHeight; } 
+                else { line = testLine; }
+            }
+            ctx.fillText(line, x, currentY);
+            return currentY - lineHeight; 
+        }
+
+        async function generatePoster_v11() {
+            const canvas = document.getElementById('posterCanvas_v11'); const ctx = canvas.getContext('2d');
+            ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            if (bgImg_v11) {
+                const targetHeight = canvas.height * 0.7;
+                const scale = Math.max(canvas.width / bgImg_v11.width, targetHeight / bgImg_v11.height);
+                const nw = bgImg_v11.width * scale; const nh = bgImg_v11.height * scale;
+                const nx = (canvas.width - nw) / 2; const ny = (targetHeight - nh) / 2;
+                ctx.save(); ctx.beginPath(); ctx.rect(0,0, canvas.width, targetHeight); ctx.clip();
+                ctx.drawImage(bgImg_v11, nx, ny, nw, nh); ctx.restore();
+            }
+            
+            if (roundImg_v11) {
+                ctx.save(); ctx.beginPath(); ctx.arc(850, 200, 150, 0, Math.PI * 2); ctx.clip();
+                const size = Math.min(roundImg_v11.width, roundImg_v11.height);
+                const sx = (roundImg_v11.width - size) / 2; const sy = (roundImg_v11.height - size) / 2;
+                ctx.drawImage(roundImg_v11, sx, sy, size, size, 700, 50, 300, 300);
+                ctx.restore(); ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.beginPath(); ctx.arc(850, 200, 150, 0, Math.PI * 2); ctx.stroke();
+            }
+            
+            const subText = document.getElementById('subText_v11').value || "";
+            const mainText = document.getElementById('mainText_v11').value || "";
+            ctx.textAlign = "center";
+            let bottomY = 1280; 
+
+            if (subText) {
+                ctx.font = "40px Arial"; ctx.fillStyle = "#ffcc00";
+                ctx.fillText(subText, 540, bottomY);
+                bottomY -= 80; 
+            } else {
+                bottomY -= 20;
+            }
+
+            ctx.fillStyle = "white"; ctx.font = "bold 70px Arial";
+            drawTextFromBottom_v11(ctx, mainText, 540, bottomY, 900, 80);
+        }
+        function download_v11() { const canvas = document.getElementById("posterCanvas_v11"); const link = document.createElement("a"); link.download = "Poster11.png"; link.href = canvas.toDataURL(); link.click(); }
+
+
+    </script>
+    <script>
+    // Auto-inject WhatsApp buttons under all Download buttons
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('a[class^="btn-save"], button[class^="btn-down"]').forEach(btn => {
+            // Create the WhatsApp button
+            const waBtn = document.createElement('button');
+            waBtn.className = 'btn-share-wa';
+            waBtn.innerHTML = '<svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp वर शेअर करा';
+            
+            // Insert it into the layout
+            btn.parentNode.insertBefore(waBtn, btn.nextSibling);
+
+            // Handle the actual sharing magic
+            waBtn.onclick = async () => {
+                const section = btn.closest('.layout-section');
+                let dataUrl = '';
+                
+                // Find either the generated image or the canvas
+                let imgEl = section.querySelector('img[id^="preview-img-"]');
+                let canvasEl = section.querySelector('canvas');
+                
+                if (imgEl && imgEl.src && imgEl.src.startsWith('data:')) {
+                    dataUrl = imgEl.src;
+                } else if (canvasEl) {
+                    dataUrl = canvasEl.toDataURL('image/png');
+                } else {
+                    alert("Please generate the poster first! (आधी 'HD पोस्ट तयार करा' वर क्लिक करा)");
+                    return;
+                }
+
+                try {
+                    const res = await fetch(dataUrl);
+                    const blob = await res.blob();
+                    const file = new File([blob], 'MakePoster.png', { type: blob.type });
+
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            files: [file],
+                            title: 'MakePoster Studio',
+                            text: 'Created with MakePoster.in 🚀'
+                        });
+                    } else {
+                        alert("Your browser doesn't support direct image sharing. Please download it using the button above!");
+                    }
+                } catch (err) {
+                    console.log('Share canceled:', err);
+                }
+            };
+        });
+    });
+    </script>
+     <div class="mobile-bottom-nav">
+    <a href="index.html" class="bottom-nav-item ">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span class="nav-label">Home</span>
+    </a>
+    
+    <a href="pro-studio.html" class="bottom-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <span class="nav-label">PRO</span>
+    </a>
+    
+    <a href="blog.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        <span class="nav-label">Tutorials</span>
+    </a>
+
+    <a href="about.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        <span class="nav-label">About</span>
+    </a>
+    
+    <a href="contact.html" class="bottom-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        <span class="nav-label">Contact</span>
+    </a>
+</div>
+</body>
+</html>
